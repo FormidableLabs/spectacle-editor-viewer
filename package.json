@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "build": "babel src -d lib --copy-files",
     "lint": "eslint . --fix"
   },
   "author": "",
@@ -13,6 +14,7 @@
     "spectacle": "^1.0.7"
   },
   "devDependencies": {
+    "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
@@ -20,7 +22,7 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-react-hmre": "^1.1.1",
-    "babel-preset-stage-2": "^6.11.0",
+    "babel-preset-stage-0": "^6.5.0",
     "eslint": "^3.0.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.10.3",
