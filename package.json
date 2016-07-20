@@ -2,7 +2,7 @@
   "name": "spectacle-editor-viewer",
   "version": "0.0.2",
   "description": "Viewer component for Spectacle Editor presentation files",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "node server.js",
     "build": "babel src -d lib --copy-files",
