@@ -13,6 +13,10 @@
   "dependencies": {
     "spectacle": "^1.0.7"
   },
+  "peerDependencies": {
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
@@ -31,6 +35,8 @@
     "express": "^4.14.0",
     "json-loader": "^0.5.4",
     "react-transform-hmr": "^1.0.4",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.1"
