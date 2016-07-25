@@ -73,8 +73,8 @@ const renderSlides = (slides) =>
   ));
 
 const Viewer = (props) => (
-  <Spectacle theme={{ screen: theme, print: theme }}>
-    <Deck transition={[]} globalStyles={false}>
+  <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
+    <Deck transition={[]}>
       {renderSlides(props.presentation.content.slides)}
     </Deck>
   </Spectacle>
@@ -82,6 +82,7 @@ const Viewer = (props) => (
 
 Viewer.propTypes = {
   presentation: PropTypes.object,
+  history: PropTypes.object,
 };
 
 export default Viewer;
