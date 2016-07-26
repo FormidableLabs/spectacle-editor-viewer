@@ -6,6 +6,13 @@ const { Spectacle, Deck, Slide, Appear } = Core;
 
 Core.Plotly = (props) => <iframe {...props} />;
 
+const quoteStyles = {
+  borderLeftWidth: '0.05em',
+  borderLeftStyle: 'solid',
+  borderLeftColor: 'inherit',
+  paddingLeft: '0.5em',
+};
+
 const renderChildren = (nodes) =>
   nodes.map((node) => {
     // Text node
@@ -22,6 +29,22 @@ const renderChildren = (nodes) =>
 
     // Get component from Spectacle core
     const Tag = Core[type];
+
+    /* eslint-disable react/prop-types */
+    if (props.isQuote) {
+      props.style = Object.assign({}, props.style, quoteStyles);
+    }
+
+    if (type === 'Text' && props.href) {
+      return (
+        <Tag key={node.id} {...props}>
+          <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+            {renderChildren(children)}
+          </a>
+        </Tag>
+      );
+      /* eslint-enable react/prop-types */
+    }
 
     // Wrap ListItems in Appear
     if (node.type === 'ListItem') {
