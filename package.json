@@ -11,7 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "spectacle": "^1.1.0"
+    "spectacle": "^1.1.1"
   },
   "peerDependencies": {
     "react": "^15.2.1",
