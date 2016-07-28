@@ -67,7 +67,7 @@ const renderChildren = (nodes) =>
 
 const renderSlides = (slides) =>
   slides.map((slide) => (
-    <Slide key={slide.id}>
+    <Slide key={slide.id} {...slide.props}>
       {slide.children && renderChildren(slide.children)}
     </Slide>
   ));
