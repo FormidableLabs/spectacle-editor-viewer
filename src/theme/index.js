@@ -166,6 +166,8 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         marginTop: 0,
       },
       content: {
+        height: 700,
+        width: 1000,
         margin: '0 auto',
         textAlign: 'center',
       },
