@@ -65,10 +65,24 @@ const renderChildren = (nodes) =>
     );
   });
 
+const slideStyles = {
+  style: {
+    flexDirection: "column"
+  }
+};
+
+const innerStyles = {
+  height: 700,
+  width: 1000,
+  padding: 40
+};
+
 const renderSlides = (slides) =>
   slides.map((slide) => (
-    <Slide key={slide.id} {...slide.props}>
-      {slide.children && renderChildren(slide.children)}
+    <Slide key={slide.id} {...{...slide.props, ...slideStyles}} viewerScaleMode>
+      <div style={innerStyles}>
+        {slide.children && renderChildren(slide.children)}
+      </div>
     </Slide>
   ));
 
