@@ -13,8 +13,11 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const renderChildren = (nodes) =>
-  nodes.map((node) => {
+const renderChildren = (nodes, isListItem) =>
+  nodes.map((node, i) => {
+    if (typeof node === 'string' && isListItem) {
+      return (<li key={`list-item-${i}`} style={theme.components.listItem}>{node}</li>);
+    }
     // Text node
     if (typeof node === 'string') {
       return node;
@@ -28,7 +31,7 @@ const renderChildren = (nodes) =>
     const { type, children, props } = node;
 
     // Get component from Spectacle core
-    const Tag = Core[type];
+    let Tag = Core[type];
 
     /* eslint-disable react/prop-types */
     if (props.isQuote) {
@@ -45,15 +48,13 @@ const renderChildren = (nodes) =>
       );
       /* eslint-enable react/prop-types */
     }
-
-    // Wrap ListItems in Appear
-    if (node.type === 'ListItem') {
+    if (node.props.listType) {
+      Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
+      console.log(children);
       return (
-        <Appear>
-          <Tag key={node.id} {...props}>
-            {children && renderChildren(children)}
-          </Tag>
-        </Appear>
+        <Tag key={node.id} {...props}>
+          {children && renderChildren(children, true)}
+        </Tag>
       );
     }
 
