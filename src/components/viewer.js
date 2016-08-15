@@ -52,7 +52,7 @@ const renderChildren = (nodes, isListItem) =>
       Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
 
       return (
-        <Tag key={node.id} {...props}>
+        <Tag key={node.id} {...props} className="presentation-list">
           {children && renderChildren(children, true)}
         </Tag>
       );
