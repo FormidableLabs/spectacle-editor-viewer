@@ -36,6 +36,9 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       '*': {
         boxSizing: 'border-box',
       },
+      'ol.presentation-list': {
+        listStyleType: 'decimal',
+      }
     },
     fullscreen: {
       fill: colors.tertiary,
@@ -253,6 +256,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       listItem: {
         fontSize: '2.66rem',
+        listStyle: 'inherit',
       },
       list: {
         textAlign: 'left',
