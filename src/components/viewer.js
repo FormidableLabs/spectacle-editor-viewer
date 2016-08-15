@@ -50,7 +50,7 @@ const renderChildren = (nodes, isListItem) =>
     }
     if (node.props.listType) {
       Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
-      console.log(children);
+
       return (
         <Tag key={node.id} {...props}>
           {children && renderChildren(children, true)}
