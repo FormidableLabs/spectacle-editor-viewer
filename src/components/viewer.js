@@ -67,9 +67,7 @@ const renderChildren = (nodes, isListItem) =>
   });
 
 const slideStyles = {
-  style: {
-    flexDirection: "column"
-  }
+  flexDirection: "column"
 };
 
 const innerStyles = {
@@ -80,7 +78,7 @@ const innerStyles = {
 
 const renderSlides = (slides) =>
   slides.map((slide) => (
-    <Slide key={slide.id} {...{...slide.props, ...slideStyles}} viewerScaleMode>
+    <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
       <div style={innerStyles}>
         {slide.children && renderChildren(slide.children)}
       </div>
