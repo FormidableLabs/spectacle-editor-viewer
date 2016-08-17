@@ -10,7 +10,7 @@ const defaultColors = {
 };
 
 const defaultFonts = {
-  primary: 'Open Sans Condensed',
+  primary: 'Open Sans',
   secondary: 'Lobster Two',
   tertiary: 'monospace',
 };

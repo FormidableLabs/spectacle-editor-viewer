@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import * as Core from 'spectacle';
 import theme from '../theme';
 
+// require('../util/font-imports.css');
+
 const { Spectacle, Deck, Slide, Appear } = Core;
 
 Core.Plotly = (props) => <iframe {...props} />;
@@ -20,7 +22,22 @@ const renderChildren = (nodes, isListItem) =>
     }
     // Text node
     if (typeof node === 'string') {
-      return node;
+      const line = node.replace(/\n/g, "");
+
+      if (line.length) {
+        return <span style={{width: "100%", display: "block"}}>{line}</span>;
+      }
+
+      const emptyLineStyles = {
+        width: "100%",
+        margin: 0,
+        display: "block",
+        minHeight: "1em",
+        padding: 0,
+        position: "relative",
+      };
+
+      return (<span style={emptyLineStyles}>&nbsp;</span>);
     }
 
     // defaultText handling
@@ -48,6 +65,7 @@ const renderChildren = (nodes, isListItem) =>
       );
       /* eslint-enable react/prop-types */
     }
+
     if (node.props.listType) {
       Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
 
