@@ -44,20 +44,20 @@ const renderChildren = (nodes, isListItem) =>
       return node.defaultText;
     }
 
-    const { type, children, props: properties } = node;
+    const { type, children, props } = node;
 
     // Get component from Spectacle core
     let Tag = Core[type];
 
     /* eslint-disable react/prop-types */
-    if (properties.isQuote) {
-      properties.style = Object.assign({}, properties.style, quoteStyles);
+    if (props.isQuote) {
+      props.style = Object.assign({}, props.style, quoteStyles);
     }
 
-    if (type === 'Text' && properties.href) {
+    if (type === 'Text' && props.href) {
       return (
-        <Tag key={node.id} {...properties}>
-          <a href={properties.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+        <Tag key={node.id} {...props}>
+          <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
             {renderChildren(children)}
           </a>
         </Tag>
@@ -65,11 +65,11 @@ const renderChildren = (nodes, isListItem) =>
       /* eslint-enable react/prop-types */
     }
 
-    if (properties.listType) {
-      Tag = (properties.listType === 'ordered') ? 'ol' : 'ul';
+    if (props.listType) {
+      Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
 
       return (
-        <Tag key={node.id} {...properties} className="presentation-list">
+        <Tag key={node.id} {...props} className="presentation-list">
           {children && renderChildren(children, true)}
         </Tag>
       );
@@ -77,7 +77,7 @@ const renderChildren = (nodes, isListItem) =>
 
     // Render and recurse
     return (
-      <Tag key={node.id} {...properties}>
+      <Tag key={node.id} {...props}>
         {children && renderChildren(children)}
       </Tag>
     );

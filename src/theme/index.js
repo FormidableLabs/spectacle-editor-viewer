@@ -38,7 +38,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       'ol.presentation-list': {
         listStyleType: 'decimal',
-      },
+      }
     },
     fullscreen: {
       fill: colors.tertiary,
@@ -171,7 +171,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       content: {
         margin: '0 auto',
         textAlign: 'center',
-        padding: 0,
+        padding: 0
       },
       codePane: {
         pre: {
