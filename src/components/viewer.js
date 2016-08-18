@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import * as Core from 'spectacle';
 import theme from '../theme';
 
-// require('../util/font-imports.css');
-
 const { Spectacle, Deck, Slide, Appear } = Core;
 
 Core.Plotly = (props) => <iframe {...props} />;
@@ -41,24 +39,25 @@ const renderChildren = (nodes, isListItem) =>
     }
 
     // defaultText handling
+
     if (node.type === 'Text' && !node.children) {
       return node.defaultText;
     }
 
-    const { type, children, props } = node;
+    const { type, children, props: properties } = node;
 
     // Get component from Spectacle core
     let Tag = Core[type];
 
     /* eslint-disable react/prop-types */
-    if (props.isQuote) {
-      props.style = Object.assign({}, props.style, quoteStyles);
+    if (properties.isQuote) {
+      properties.style = Object.assign({}, properties.style, quoteStyles);
     }
 
-    if (type === 'Text' && props.href) {
+    if (type === 'Text' && properties.href) {
       return (
-        <Tag key={node.id} {...props}>
-          <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+        <Tag key={node.id} {...properties}>
+          <a href={properties.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
             {renderChildren(children)}
           </a>
         </Tag>
@@ -66,19 +65,20 @@ const renderChildren = (nodes, isListItem) =>
       /* eslint-enable react/prop-types */
     }
 
-    if (node.props.listType) {
-      Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
+    if (properties.listType) {
+      Tag = (properties.listType === 'ordered') ? 'ol' : 'ul';
 
       return (
-        <Tag key={node.id} {...props} className="presentation-list">
+        <Tag key={node.id} {...properties} className="presentation-list">
           {children && renderChildren(children, true)}
         </Tag>
       );
     }
-
+    console.log({...properties});
+    console.log(children);
     // Render and recurse
     return (
-      <Tag key={node.id} {...props}>
+      <Tag key={node.id} {...properties}>
         {children && renderChildren(children)}
       </Tag>
     );
