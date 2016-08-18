@@ -74,8 +74,7 @@ const renderChildren = (nodes, isListItem) =>
         </Tag>
       );
     }
-    console.log({...properties});
-    console.log(children);
+
     // Render and recurse
     return (
       <Tag key={node.id} {...properties}>
