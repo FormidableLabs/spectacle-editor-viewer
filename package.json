@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "build": "babel src -d lib --copy-files",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "preversion": "npm run buld"
   },
   "author": "",
   "license": "MIT",
