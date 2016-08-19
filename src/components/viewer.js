@@ -20,10 +20,26 @@ const renderChildren = (nodes, isListItem) =>
     }
     // Text node
     if (typeof node === 'string') {
-      return node;
+      const line = node.replace(/\n/g, "");
+
+      if (line.length) {
+        return <span style={{width: "100%", display: "block"}}>{line}</span>;
+      }
+
+      const emptyLineStyles = {
+        width: "100%",
+        margin: 0,
+        display: "block",
+        minHeight: "1em",
+        padding: 0,
+        position: "relative",
+      };
+
+      return (<span style={emptyLineStyles}>&nbsp;</span>);
     }
 
     // defaultText handling
+
     if (node.type === 'Text' && !node.children) {
       return node.defaultText;
     }
@@ -48,8 +64,9 @@ const renderChildren = (nodes, isListItem) =>
       );
       /* eslint-enable react/prop-types */
     }
-    if (node.props.listType) {
-      Tag = (node.props.listType === 'ordered') ? 'ol' : 'ul';
+
+    if (props.listType) {
+      Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
 
       return (
         <Tag key={node.id} {...props} className="presentation-list">
