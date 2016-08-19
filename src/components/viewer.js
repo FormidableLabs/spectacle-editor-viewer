@@ -13,12 +13,9 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const extendParagraphStyles = (props, styles) => {
-  if (props.paragraphStyle && styles[props.paragraphStyle]) {
-    props.style = Object.assign({}, styles[props.paragraphStyle], props.style)
-  }
-  return props;
-}
+const getStylesForText = (props, paragraphStyles) => {
+  return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
+};
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
@@ -61,7 +58,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         contents = renderChildren(children, paragraphStyles);
       }
       return (
-        <Tag key={node.id} {...extendParagraphStyles(props, paragraphStyles)}>
+        <Tag key={node.id} {...props} style={{...getStylesForText(props, paragraphStyles)}}>
           {contents}
         </Tag>
       );
