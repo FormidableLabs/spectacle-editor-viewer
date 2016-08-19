@@ -20,26 +20,14 @@ const renderChildren = (nodes, isListItem) =>
     }
     // Text node
     if (typeof node === 'string') {
-      const line = node.replace(/\n/g, "");
-
-      if (line.length) {
-        return <span style={{width: "100%", display: "block"}}>{line}</span>;
-      }
-
-      const emptyLineStyles = {
-        width: "100%",
-        margin: 0,
-        display: "block",
-        minHeight: "1em",
-        padding: 0,
-        position: "relative",
-      };
-
-      return (<span style={emptyLineStyles}>&nbsp;</span>);
+      return node.replace(/\n$/, "").split("\n").map((line, k) => (
+        <span style={{width: "100%", display: "block"}}>
+          {line.trim() === "" ? "\u200B" : line}
+        </span>
+      ));
     }
 
     // defaultText handling
-
     if (node.type === 'Text' && !node.children) {
       return node.defaultText;
     }
