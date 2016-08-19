@@ -13,7 +13,14 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const renderChildren = (nodes, isListItem) =>
+const extendParagraphStyles = (props, styles) => {
+  if (props.paragraphStyle && styles[props.paragraphStyle]) {
+    props.style = Object.assign({}, styles[props.paragraphStyle], props.style)
+  }
+  return props;
+}
+
+const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     if (typeof node === 'string' && isListItem) {
       return (<li key={`list-item-${i}`} style={theme.components.listItem}>{node}</li>);
@@ -42,12 +49,20 @@ const renderChildren = (nodes, isListItem) =>
       props.style = Object.assign({}, props.style, quoteStyles);
     }
 
-    if (type === 'Text' && props.href) {
-      return (
-        <Tag key={node.id} {...props}>
+    if (type === 'Text') {
+      let contents;
+      if (props.href) {
+        contents = (
           <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
-            {renderChildren(children)}
+            {renderChildren(children, paragraphStyles)}
           </a>
+        )
+      } else {
+        contents = renderChildren(children, paragraphStyles);
+      }
+      return (
+        <Tag key={node.id} {...extendParagraphStyles(props, paragraphStyles)}>
+          {contents}
         </Tag>
       );
       /* eslint-enable react/prop-types */
@@ -58,7 +73,7 @@ const renderChildren = (nodes, isListItem) =>
 
       return (
         <Tag key={node.id} {...props} className="presentation-list">
-          {children && renderChildren(children, true)}
+          {children && renderChildren(children, paragraphStyles, true)}
         </Tag>
       );
     }
@@ -66,7 +81,7 @@ const renderChildren = (nodes, isListItem) =>
     // Render and recurse
     return (
       <Tag key={node.id} {...props}>
-        {children && renderChildren(children)}
+        {children && renderChildren(children, paragraphStyles)}
       </Tag>
     );
   });
@@ -81,11 +96,11 @@ const innerStyles = {
   padding: 40
 };
 
-const renderSlides = (slides) =>
+const renderSlides = ({slides, paragraphStyles}) =>
   slides.map((slide) => (
     <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
       <div style={innerStyles}>
-        {slide.children && renderChildren(slide.children)}
+        {slide.children && renderChildren(slide.children, paragraphStyles)}
       </div>
     </Slide>
   ));
@@ -93,7 +108,7 @@ const renderSlides = (slides) =>
 const Viewer = (props) => (
   <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
     <Deck transition={[]} globalStyles={false}>
-      {renderSlides(props.content.presentation.slides)}
+      {renderSlides(props.content.presentation)}
     </Deck>
   </Spectacle>
 );
