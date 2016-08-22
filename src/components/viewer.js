@@ -104,7 +104,7 @@ const renderSlides = ({slides, paragraphStyles}) =>
 
 const Viewer = (props) => (
   <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
-    <Deck transition={[]} globalStyles={false}>
+    <Deck transition={[]} globalStyles={false} progress="none">
       {renderSlides(props.content.presentation)}
     </Deck>
   </Spectacle>
