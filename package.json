@@ -7,7 +7,7 @@
     "start": "node server.js",
     "build": "babel src -d lib --copy-files",
     "lint": "eslint . --fix",
-    "preversion": "npm run buld"
+    "preversion": "npm run build"
   },
   "author": "",
   "license": "MIT",
