@@ -3,10 +3,6 @@
           transform-origin: center center;
 }
 
-button:hover svg {
-  fill: #ccc !important;
-}
-
 /* Firefox */
 
 _:-moz-tree-row(hover), .spectacle-deck {

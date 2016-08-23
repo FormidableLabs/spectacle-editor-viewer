@@ -38,7 +38,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       'ol.presentation-list': {
         listStyleType: 'decimal',
-      },
+      }
     },
     fullscreen: {
       fill: colors.tertiary,
@@ -56,6 +56,9 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       prevIcon: {
         fill: '#eee',
+        ':hover': {
+          fill: '#ccc'
+        }
       },
       next: {
         position: 'absolute',
@@ -69,6 +72,9 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       nextIcon: {
         fill: '#eee',
+        ':hover': {
+          fill: '#ccc'
+        }
       },
     },
     progress: {
