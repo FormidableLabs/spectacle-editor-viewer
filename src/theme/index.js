@@ -15,6 +15,11 @@ const defaultFonts = {
   tertiary: 'monospace',
 };
 
+const controlColors = {
+  primary: '#eee',
+  hover: '#ccc',
+};
+
 const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
   const colors = Object.assign({}, defaultColors, colorArgs);
   const fonts = Object.assign({}, defaultFonts, fontArgs);
@@ -38,7 +43,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       'ol.presentation-list': {
         listStyleType: 'decimal',
-      }
+      },
     },
     fullscreen: {
       fill: colors.tertiary,
@@ -55,10 +60,10 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       prevIcon: {
-        fill: '#eee',
+        fill: controlColors.primary,
         ':hover': {
-          fill: '#ccc'
-        }
+          fill: controlColors.hover,
+        },
       },
       next: {
         position: 'absolute',
@@ -71,10 +76,10 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       nextIcon: {
-        fill: '#eee',
+        fill: controlColors.primary,
         ':hover': {
-          fill: '#ccc'
-        }
+          fill: controlColors.hover,
+        },
       },
     },
     progress: {
@@ -177,7 +182,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       content: {
         margin: '0 auto',
         textAlign: 'center',
-        padding: 0
+        padding: 0,
       },
       codePane: {
         pre: {
