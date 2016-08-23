@@ -15,6 +15,11 @@ const defaultFonts = {
   tertiary: 'monospace',
 };
 
+const controlColors = {
+  primary: '#eee',
+  hover: '#ccc',
+};
+
 const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
   const colors = Object.assign({}, defaultColors, colorArgs);
   const fonts = Object.assign({}, defaultFonts, fontArgs);
@@ -55,7 +60,10 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       prevIcon: {
-        fill: colors.quartenary,
+        fill: controlColors.primary,
+        ':hover': {
+          fill: controlColors.hover,
+        },
       },
       next: {
         position: 'absolute',
@@ -68,7 +76,10 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       nextIcon: {
-        fill: colors.quartenary,
+        fill: controlColors.primary,
+        ':hover': {
+          fill: controlColors.hover,
+        },
       },
     },
     progress: {
