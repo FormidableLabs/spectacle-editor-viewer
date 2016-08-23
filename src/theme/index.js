@@ -38,7 +38,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
       },
       'ol.presentation-list': {
         listStyleType: 'decimal',
-      }
+      },
     },
     fullscreen: {
       fill: colors.tertiary,
@@ -55,7 +55,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       prevIcon: {
-        fill: colors.quartenary,
+        fill: '#eee',
       },
       next: {
         position: 'absolute',
@@ -68,7 +68,7 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         outline: 0,
       },
       nextIcon: {
-        fill: colors.quartenary,
+        fill: '#eee',
       },
     },
     progress: {
