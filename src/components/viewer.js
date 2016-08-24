@@ -46,7 +46,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       props.style = Object.assign({}, props.style, quoteStyles);
     }
 
-    if (type === 'Text') {
+    if (type === 'Text' && !props.listType) {
       let contents;
       if (props.href) {
         contents = (
@@ -65,11 +65,15 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       /* eslint-enable react/prop-types */
     }
 
-    if (props.listType) {
+    if (type === 'Text' && props.listType) {
       Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
 
       return (
-        <Tag key={node.id} {...props} className="presentation-list">
+        <Tag
+          key={node.id}
+          className="presentation-list"
+          style={{...getStylesForText(props, paragraphStyles)}}
+        >
           {children && renderChildren(children, paragraphStyles, true)}
         </Tag>
       );
