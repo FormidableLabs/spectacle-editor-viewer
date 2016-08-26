@@ -20,7 +20,13 @@ const getStylesForText = (props, paragraphStyles) => {
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     if (typeof node === 'string' && isListItem) {
-      return (<li key={`list-item-${i}`} style={theme.components.listItem}>{node}</li>);
+      return (
+        <Appear
+          key={`list-item-${i}`} 
+        >
+          <li style={theme.components.listItem}>{node}</li>
+        </Appear>
+      );
     }
     // Text node
     if (typeof node === 'string') {
