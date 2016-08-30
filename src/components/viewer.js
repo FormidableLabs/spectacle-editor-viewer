@@ -21,7 +21,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
     if (typeof node === 'string') {
-      const contents = node.replace(/\n$/, "").split("\n").map((line, k) => (
+      const contents = node.split("\n").map((line, k) => (
         <span key={`line-${k}`} style={{width: "100%", display: "block"}}>
           {line === "" ? "\u200B" : line}
         </span>
