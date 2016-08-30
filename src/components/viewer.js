@@ -14,7 +14,6 @@ const quoteStyles = {
 };
 
 const getStylesForText = (props, paragraphStyles) => {
-
   return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 };
 
