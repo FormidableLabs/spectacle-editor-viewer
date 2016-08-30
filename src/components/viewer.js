@@ -19,16 +19,18 @@ const getStylesForText = (props, paragraphStyles) => {
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
-    if (typeof node === 'string' && isListItem) {
-      return (<li key={`list-item-${i}`} style={theme.components.listItem}>{node}</li>);
-    }
     // Text node
     if (typeof node === 'string') {
-      return node.replace(/\n$/, "").split("\n").map((line, k) => (
+      const contents = node.replace(/\n$/, "").split("\n").map((line, k) => (
         <span style={{width: "100%", display: "block"}}>
-          {line.trim() === "" ? "\u200B" : line}
+          {line === "" ? "\u200B" : line}
         </span>
       ));
+
+      if (isListItem) {
+        return (<li key={`list-item-${i}`}>{contents}</li>);
+      }
+      return contents;
     }
 
     // defaultText handling
