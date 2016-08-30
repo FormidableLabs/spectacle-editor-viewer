@@ -59,6 +59,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       } else {
         contents = renderChildren(children, paragraphStyles);
       }
+
       return (
         <Tag key={node.id} {...props} style={{...getStylesForText(props, paragraphStyles)}}>
           {contents}
@@ -74,7 +75,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         <Tag
           key={node.id}
           className="presentation-list"
-          style={{...getStylesForText(props, paragraphStyles)}}
+          style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
         >
           {children && renderChildren(children, paragraphStyles, true)}
         </Tag>
