@@ -13,11 +13,9 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const getStylesForText = (props, paragraphStyles, ...args) => {
-  args.unshift({});
+const getStylesForText = (props, paragraphStyles) => {
 
-  return Object.assign.apply(null, args.concat([paragraphStyles[props.paragraphStyle], props.style]));
-  // return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
+  return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 };
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
@@ -78,7 +76,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         <Tag
           key={node.id}
           className="presentation-list"
-          style={{ ...getStylesForText(props, paragraphStyles, { margin: 0 }) }}
+          style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
         >
           {children && renderChildren(children, paragraphStyles, true)}
         </Tag>
