@@ -266,7 +266,8 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         textDecoration: 'none',
       },
       listItem: {
-        fontSize: '2.66rem',
+        fontSize: 'inherit',
+        listStyle: 'inherit',
       },
       list: {
         textAlign: 'left',

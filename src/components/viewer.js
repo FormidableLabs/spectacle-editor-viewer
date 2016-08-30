@@ -22,13 +22,13 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
     // Text node
     if (typeof node === 'string') {
       const contents = node.replace(/\n$/, "").split("\n").map((line, k) => (
-        <span style={{width: "100%", display: "block"}}>
+        <span key={`line-${k}`} style={{width: "100%", display: "block"}}>
           {line === "" ? "\u200B" : line}
         </span>
       ));
 
       if (isListItem) {
-        return (<li key={`list-item-${i}`}>{contents}</li>);
+        return (<li key={`list-item-${i}`} style={theme.components.listItem}>{contents}</li>);
       }
       return contents;
     }
