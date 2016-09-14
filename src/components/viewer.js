@@ -44,12 +44,10 @@ const renderChildren = (version, nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
     if (typeof node === 'string') {
-      let contents;
       if (!version) {
         return renderPreVersionedText(node, isListItem, i);
       }
-
-      contents = escapeHtml(node).replace(/\n/g, () => "<br>");
+      const contents = escapeHtml(node).replace(/\n/g, () => "<br>");
       if (isListItem) {
         return (<li key={`list-item-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
       }
