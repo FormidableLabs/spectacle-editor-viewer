@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "react-syntax-highlighter": "^2.4.0",
     "spectacle": "^1.1.6"
   },
   "peerDependencies": {
@@ -35,9 +36,9 @@
     "eslint-plugin-react": "^5.2.2",
     "express": "^4.14.0",
     "json-loader": "^0.5.4",
-    "react-transform-hmr": "^1.0.4",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-transform-hmr": "^1.0.4",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.1"
