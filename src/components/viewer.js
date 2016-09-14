@@ -2,9 +2,13 @@ import React, { PropTypes } from 'react';
 import * as Core from 'spectacle';
 import theme from '../theme';
 
+import Syntax from "./syntax";
+
 const { Spectacle, Deck, Slide, Appear } = Core;
 
 Core.Plotly = (props) => <iframe {...props} />;
+
+Core.CodePane = Syntax; // Use custom Syntax component for CodePane
 
 const quoteStyles = {
   borderLeftWidth: '0.05em',
@@ -17,20 +21,39 @@ const getStylesForText = (props, paragraphStyles) => {
   return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 };
 
-const renderChildren = (nodes, paragraphStyles, isListItem) =>
+const escapeHtml = (str) => {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+// older way of rendering text, preservered for backcompat
+const renderPreVersionedText = (node, isListItem, i) => {
+  const contents = node.split("\n").map((line, k) => (
+    <span key={`line-${k}`} style={{width: "100%", display: "block"}}>
+      {line === "" ? "\u200B" : line}
+    </span>
+  ));
+  if (isListItem) {
+    return (<li key={`list-item-${i}`} style={theme.components.listItem}>{contents}</li>);
+  }
+  return contents;
+}
+
+const renderChildren = (version, nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
     if (typeof node === 'string') {
-      const contents = node.split("\n").map((line, k) => (
-        <span key={`line-${k}`} style={{width: "100%", display: "block"}}>
-          {line === "" ? "\u200B" : line}
-        </span>
-      ));
-
-      if (isListItem) {
-        return (<li key={`list-item-${i}`} style={theme.components.listItem}>{contents}</li>);
+      let contents;
+      if (!version) {
+        return renderPreVersionedText(node, isListItem, i);
       }
-      return contents;
+
+      contents = escapeHtml(node).replace(/\n/g, () => "<br>");
+      if (isListItem) {
+        return (<li key={`list-item-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
+      }
+      return <span key={`line-${i}`} style={{ width: "100%", display: "block" }} dangerouslySetInnerHTML={{ __html: contents }} />;
     }
 
     // defaultText handling
@@ -53,11 +76,11 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       if (props.href) {
         contents = (
           <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
-            {renderChildren(children, paragraphStyles)}
+            {renderChildren(version, children, paragraphStyles)}
           </a>
         )
       } else {
-        contents = renderChildren(children, paragraphStyles);
+        contents = renderChildren(version, children, paragraphStyles);
       }
 
       return (
@@ -77,7 +100,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
           className="presentation-list"
           style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
         >
-          {children && renderChildren(children, paragraphStyles, true)}
+          {children && renderChildren(version, children, paragraphStyles, true)}
         </Tag>
       );
     }
@@ -85,7 +108,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
     // Render and recurse
     return (
       <Tag key={node.id} {...props}>
-        {children && renderChildren(children, paragraphStyles)}
+        {children && renderChildren(version, children, paragraphStyles)}
       </Tag>
     );
   });
@@ -100,11 +123,11 @@ const innerStyles = {
   padding: 40
 };
 
-const renderSlides = ({slides, paragraphStyles}) =>
+const renderSlides = ({version, presentation: {slides, paragraphStyles}}) =>
   slides.map((slide) => (
     <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
       <div style={innerStyles}>
-        {slide.children && renderChildren(slide.children, paragraphStyles)}
+        {slide.children && renderChildren(version, slide.children, paragraphStyles)}
       </div>
     </Slide>
   ));
@@ -112,7 +135,7 @@ const renderSlides = ({slides, paragraphStyles}) =>
 const Viewer = (props) => (
   <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
     <Deck transition={[]} globalStyles={false} progress="none">
-      {renderSlides(props.content.presentation)}
+      {renderSlides(props.content)}
     </Deck>
   </Spectacle>
 );
