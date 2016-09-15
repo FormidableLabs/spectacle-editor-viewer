@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import cloneDeep from 'lodash.clonedeep';
 
-export default ({ presentation }) => {
+export default (presentation) => {
   const cloned = cloneDeep(presentation);
   if (!cloned.version) {
     cloned.slides.forEach((slide) => {
