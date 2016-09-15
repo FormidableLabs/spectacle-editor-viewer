@@ -55,7 +55,9 @@ const STYLE_TAG_ID = '_spectacle-viewer-syntax-style';
 class Syntax extends Component {
 
   componentDidMount() {
-    if (document.getElementById(STYLE_TAG_ID)) return;
+    if (document.getElementById(STYLE_TAG_ID)) {
+      return;
+    }
     const el = document.createElement('style');
     el.type = 'text/css';
     el.id = STYLE_TAG_ID;
