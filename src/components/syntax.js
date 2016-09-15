@@ -50,25 +50,7 @@ const styles = {
   tomorrowNight,
 };
 
-const STYLE_TAG_ID = '_spectacle-viewer-syntax-style';
-
 class Syntax extends Component {
-
-  componentDidMount() {
-    if (document.getElementById(STYLE_TAG_ID)) {
-      return;
-    }
-    const el = document.createElement('style');
-    el.type = 'text/css';
-    el.id = STYLE_TAG_ID;
-    const cssText = '.spectacle-viewer-syntax code { font-family: inherit; }';
-    if (el.styleSheet) {
-      el.styleSheet.cssText = cssText;
-    } else {
-      el.appendChild(document.createTextNode(cssText));
-    }
-    document.head.appendChild(el);
-  }
 
   shouldComponentUpdate(nextProps) {
     const { language, theme, style, source } = this.props;
@@ -87,7 +69,7 @@ class Syntax extends Component {
         language={language}
         style={styles[theme]}
         customStyle={style}
-        className="spectacle-viewer-syntax"
+        codeTagProps={{ style: { fontFamily: 'inherit' } }}
       >
         {source}
       </SyntaxHighlighter>
