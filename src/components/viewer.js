@@ -2,9 +2,12 @@ import React, { PropTypes } from 'react';
 import * as Core from 'spectacle';
 import theme from '../theme';
 
+import Syntax from './syntax';
+
 const { Spectacle, Deck, Slide, Appear } = Core;
 
 Core.Plotly = (props) => <iframe {...props} />;
+Core.CodePane = Syntax; // Use custom Syntax component for CodePane
 
 const quoteStyles = {
   borderLeftWidth: '0.05em',
