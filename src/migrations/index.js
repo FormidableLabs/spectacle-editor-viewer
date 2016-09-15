@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import cloneDeep from 'lodash.clonedeep';
 
-export default ({ version, presentation }) => {
+export default ({ presentation }) => {
   const cloned = cloneDeep(presentation);
-  if (!version) {
+  if (!cloned.version) {
     cloned.slides.forEach((slide) => {
       slide.children.forEach((childObj) => {
         // move width/height to inline styles
