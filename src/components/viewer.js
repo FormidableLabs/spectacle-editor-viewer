@@ -3,6 +3,7 @@ import * as Core from 'spectacle';
 import theme from '../theme';
 
 import Syntax from './syntax';
+import migrate from '../migrations';
 
 const { Spectacle, Deck, Slide, Appear } = Core;
 
@@ -20,20 +21,21 @@ const getStylesForText = (props, paragraphStyles) => {
   return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 };
 
+const escapeHtml = (str) => {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
     if (typeof node === 'string') {
-      const contents = node.split("\n").map((line, k) => (
-        <span key={`line-${k}`} style={{width: "100%", display: "block"}}>
-          {line === "" ? "\u200B" : line}
-        </span>
-      ));
-
+      const contents = escapeHtml(node).replace(/\n/g, '<br>');
       if (isListItem) {
-        return (<li key={`list-item-${i}`} style={theme.components.listItem}>{contents}</li>);
+        return (<li key={`line-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
       }
-      return contents;
+      return <span key={`line-${i}`} style={{ width: "100%", display: "block" }} dangerouslySetInnerHTML={{ __html: contents }} />;
     }
 
     // defaultText handling
@@ -112,13 +114,16 @@ const renderSlides = ({slides, paragraphStyles}) =>
     </Slide>
   ));
 
-const Viewer = (props) => (
-  <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
-    <Deck transition={[]} globalStyles={false} progress="none">
-      {renderSlides(props.content.presentation)}
-    </Deck>
-  </Spectacle>
-);
+const Viewer = (props) => {
+  const migrated = migrate(props.content);
+  return (
+    <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
+      <Deck transition={[]} globalStyles={false} progress="none">
+        {renderSlides(migrated)}
+      </Deck>
+    </Spectacle>
+  );
+}
 
 Viewer.propTypes = {
   content: PropTypes.object,
