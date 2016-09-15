@@ -115,11 +115,11 @@ const renderSlides = ({slides, paragraphStyles}) =>
   ));
 
 const Viewer = (props) => {
-  const migrated = migrate(props.content);
+  const presentation = migrate(props.content.presentation);
   return (
     <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
       <Deck transition={[]} globalStyles={false} progress="none">
-        {renderSlides(migrated)}
+        {renderSlides(presentation)}
       </Deck>
     </Spectacle>
   );
