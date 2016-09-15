@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
     "react-syntax-highlighter": "^2.4.0",
     "spectacle": "^1.1.6"
   },
