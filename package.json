@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "lodash.clonedeep": "^4.5.0",
-    "react-syntax-highlighter": "^2.5.0",
+    "react-syntax-highlighter": "^2.6.0",
     "spectacle": "^1.1.6"
   },
   "peerDependencies": {

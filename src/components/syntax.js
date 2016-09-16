@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/light';
 
 import tomorrow from 'react-syntax-highlighter/dist/styles/tomorrow';
 import tomorrowNight from 'react-syntax-highlighter/dist/styles/tomorrow-night';
