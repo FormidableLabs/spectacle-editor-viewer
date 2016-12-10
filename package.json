@@ -17,8 +17,8 @@
     "spectacle": "^1.1.6"
   },
   "peerDependencies": {
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
