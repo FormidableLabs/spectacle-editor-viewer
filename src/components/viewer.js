@@ -27,6 +27,8 @@ const escapeHtml = (str) => {
   return div.innerHTML;
 }
 
+const isDangerousUrl = (url) => /^javascript:/i.test(url);
+
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
@@ -52,6 +54,14 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
     if (props.isQuote) {
       props.style = Object.assign({}, props.style, quoteStyles);
     }
+
+    // Trap javascript: protocol links and replace with an href that does nothing
+    const urlPropNames = ['href', 'src'];
+    urlPropNames.forEach(propName => {
+      if (props[propName] && isDangerousUrl(props[propName])) {
+        props[propName] = "javascript:;";
+      }
+    });
 
     if (type === 'Text' && !props.listType) {
       let contents;
