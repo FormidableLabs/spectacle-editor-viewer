@@ -29,7 +29,8 @@ const escapeHtml = (str) => {
 
 const isDangerousUrl = (url) => /^javascript:/i.test(url);
 
-// "[Click for XSS](javascript:alert('XSS'))"
+// Replace any markdown links using the javascript: protocol to a version that
+// does nothing, i.e. "[Click for XSS](javascript:alert('XSS'))" becomes "[Click for XSS](javascript:;)"
 const sanitizeMarkdown = (markdown) => {
   return markdown.replace(/\(javascript:.*?\)/ig, '(javascript:;)');
 };
@@ -68,7 +69,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       }
     });
 
-    if (type === 'Markdown') {
+    if (type === 'Markdown' && props.source) {
       // Sanitize markdown source
       props.source = sanitizeMarkdown(props.source);
     }
