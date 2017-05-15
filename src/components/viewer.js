@@ -29,6 +29,12 @@ const escapeHtml = (str) => {
 
 const isDangerousUrl = (url) => /^javascript:/i.test(url);
 
+// Replace any markdown links using the javascript: protocol to a version that
+// does nothing, i.e. "[Click for XSS](javascript:alert('XSS'))" becomes "[Click for XSS](javascript:;)"
+const sanitizeMarkdown = (markdown) => {
+  return markdown.replace(/\(javascript:.*?\)/ig, '(javascript:;)');
+};
+
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
@@ -62,6 +68,11 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         props[propName] = "javascript:;";
       }
     });
+
+    if (type === 'Markdown' && props.source) {
+      // Sanitize markdown source
+      props.source = sanitizeMarkdown(props.source);
+    }
 
     if (type === 'Text' && !props.listType) {
       let contents;
