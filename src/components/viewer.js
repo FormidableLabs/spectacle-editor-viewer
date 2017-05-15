@@ -29,6 +29,11 @@ const escapeHtml = (str) => {
 
 const isDangerousUrl = (url) => /^javascript:/i.test(url);
 
+// "[Click for XSS](javascript:alert('XSS'))"
+const sanitizeMarkdown = (markdown) => {
+  return markdown.replace(/\(javascript:.*?\)/ig, '(javascript:;)');
+};
+
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes.map((node, i) => {
     // Text node
@@ -62,6 +67,11 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         props[propName] = "javascript:;";
       }
     });
+
+    if (type === 'Markdown') {
+      // Sanitize markdown source
+      props.source = sanitizeMarkdown(props.source);
+    }
 
     if (type === 'Text' && !props.listType) {
       let contents;
