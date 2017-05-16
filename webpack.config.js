@@ -16,17 +16,22 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
   ],
+  resolve: {
+    alias: {
+      react: path.resolve('./node_modules/react'),
+    },
+  },
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loaders: ['babel-loader'],
       include: [
         path.join(__dirname, 'src'),
         path.join(__dirname, 'demo'),
       ],
     }, {
       test: /\.json$/,
-      loaders: ['json'],
+      loaders: ['json-loader'],
       include: path.join(__dirname, 'demo'),
     }],
   },

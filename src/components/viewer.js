@@ -138,17 +138,23 @@ const renderSlides = ({slides, paragraphStyles}) =>
 const Viewer = (props) => {
   const presentation = migrate(props.content.presentation);
   return (
-    <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
-      <Deck transition={[]} globalStyles={false} progress="none">
-        {renderSlides(presentation)}
-      </Deck>
-    </Spectacle>
+    <Deck 
+      transition={[]} 
+      globalStyles={false} 
+      progress="none"
+      theme={{ screen: theme, print: theme }}
+      history={props.history}
+      remote={props.remote}
+    >
+      {renderSlides(presentation)}
+    </Deck>
   );
 }
 
 Viewer.propTypes = {
   content: PropTypes.object,
   history: PropTypes.object,
+  remote: PropTypes.object,
 };
 
 export default Viewer;
