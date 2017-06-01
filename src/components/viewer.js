@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import * as Core from 'spectacle';
+import sanitizeHtml from 'sanitize-html';
 import theme from '../theme';
 
 import Syntax from './syntax';
@@ -127,13 +128,19 @@ const innerStyles = {
 };
 
 const renderSlides = ({slides, paragraphStyles}) =>
-  slides.map((slide) => (
-    <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
-      <div style={innerStyles}>
-        {slide.children && renderChildren(slide.children, paragraphStyles)}
-      </div>
-    </Slide>
-  ));
+  slides.map((slide) => {
+    if (slide.props.notes) {
+      slide.props.notes = sanitizeHtml(slide.props.notes);
+    }
+
+    return (
+      <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
+        <div style={innerStyles}>
+          {slide.children && renderChildren(slide.children, paragraphStyles)}
+        </div>
+      </Slide>
+    );
+  });
 
 const Viewer = (props) => {
   const presentation = migrate(props.content.presentation);
