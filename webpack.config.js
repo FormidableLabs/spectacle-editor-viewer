@@ -27,7 +27,10 @@ module.exports = {
     }, {
       test: /\.json$/,
       loaders: ['json'],
-      include: path.join(__dirname, 'demo'),
+      include: [
+        path.join(__dirname, 'demo'),
+        path.join(__dirname, 'node_modules/entities/maps'),
+      ],
     }],
   },
 };
