@@ -41,14 +41,14 @@
                                 "left": -14999
                             }, 
                             "imageName": null, 
-                            "source": "[3](javascript:alert(3)) <div>aaaa<b>fff</b></div>", 
+                            "source": "[3](javascript:alert(3)) [dangerous link](data:html;base64,PHNjcmlwdD5hbGVydChkb2N1bWVudC5jb29raWVzKTwvc2NyaXB0Pg==) [safe link](http://www.google.com)", 
                             "height": 300
                         }
                     }
                 ], 
                 "id": "rk-zWwQgW", 
                 "props": {
-                    "notes": "<strong>5</strong>more notes!!<img src=x onerror=alert(1) style='position:fixed;top:0;left:0;bottom:0;right:0;background:#fff'>", 
+                    "notes": "<strong>5</strong>more notes!!<img src=x onerror=alert(1) style='position:fixed;top:0;left:0;bottom:0;right:0;background:#fff'><a href='data:html;base64,PHNjcmlwdD5hbGVydChkb2N1bWVudC5jb29raWVzKTwvc2NyaXB0Pg=='>dangerous link</a>", 
                     "transition": [
                         "slide"
                     ], 
