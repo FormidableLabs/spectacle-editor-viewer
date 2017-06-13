@@ -28,12 +28,22 @@ const escapeHtml = (str) => {
   return div.innerHTML;
 }
 
-const isDangerousUrl = (url) => /^javascript:/i.test(url);
+const whitelistedProtocols = ['http', 'https', 'mailto'];
 
-// Replace any markdown links using the javascript: protocol to a version that
-// does nothing, i.e. "[Click for XSS](javascript:alert('XSS'))" becomes "[Click for XSS](javascript:;)"
+const isDangerousUrl = (url) => {
+  return !whitelistedProtocols.some(proto => url.startsWith(proto + '://'));
+};
+
+// Prepend an http:// in front of any markdown links that don't begin with a valid protocol such as
+// javascript:, data:, etc. This will obviously point to a bad URL but it won't allow anything
+// malicious to execute.
 const sanitizeMarkdown = (markdown) => {
-  return markdown.replace(/\(javascript:.*?\)/ig, '(javascript:;)');
+  return markdown.replace(/\(([a-z]+):/ig, (match, proto) => {
+    if (!whitelistedProtocols.includes(proto)) {
+      return match.replace(proto + ':', 'http://');
+    }
+    return match;
+  });
 };
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
