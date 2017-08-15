@@ -28,10 +28,11 @@ const escapeHtml = (str) => {
   return div.innerHTML;
 }
 
-const whitelistedProtocols = ['http', 'https', 'mailto'];
+const whitelistedProtocols = ['http://', 'https://', 'mailto://', 'data:image/gif',
+  'data:image/png', 'data:image/jpeg', 'data:image/webp'];
 
 const isDangerousUrl = (url) => {
-  return !whitelistedProtocols.some(proto => url.startsWith(proto + '://'));
+  return !whitelistedProtocols.some(proto => url.startsWith(proto));
 };
 
 // Prepend an http:// in front of any markdown links that don't begin with a valid protocol such as
@@ -40,7 +41,7 @@ const isDangerousUrl = (url) => {
 const sanitizeMarkdown = (markdown) => {
   return markdown.replace(/\(([a-z]+):/ig, (match, proto) => {
     if (!whitelistedProtocols.includes(proto)) {
-      return match.replace(proto + ':', 'http://');
+      return match.replace(proto, 'http://');
     }
     return match;
   });
