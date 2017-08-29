@@ -42,7 +42,7 @@ const containsJS = (markup) => markup.indexOf('javascript&colon;') !== -1;
 // malicious to execute.
 const sanitizeMarkdown = (markdown) => {
   if (containsJS(markdown)) {
-    markdown.replace(/javascript&colon;/g, '');
+    markdown  = markdown.replace(/javascript&colon;|javascript:/g, '');
   }
 
   return markdown.replace(/\(([a-z]+):/ig, (match, proto) => {
