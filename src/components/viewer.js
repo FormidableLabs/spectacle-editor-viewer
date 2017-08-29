@@ -35,7 +35,7 @@ const isDangerousUrl = (url) => {
   return !whitelistedProtocols.some(proto => url.startsWith(proto));
 };
 
-const containsJS = (markup) => markup.indexOf('javascript&colon;') !== -1;
+const containsJS = (markup) => markup.indexOf('javascript&colon;') !== -1 || markup.indexOf('javascript:') !== -1;
 
 // Prepend an http:// in front of any markdown links that don't begin with a valid protocol such as
 // javascript:, data:, etc. This will obviously point to a bad URL but it won't allow anything
