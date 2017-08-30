@@ -8,7 +8,7 @@ import migrate from '../migrations';
 
 const { Spectacle, Deck, Slide, Appear } = Core;
 
-Core.Plotly = (props) => <iframe {...props} />;
+Core.Plotly = ({srcDoc, ...props}) => <iframe {...props} />;
 Core.CodePane = Syntax; // Use custom Syntax component for CodePane
 
 const quoteStyles = {
@@ -35,10 +35,16 @@ const isDangerousUrl = (url) => {
   return !whitelistedProtocols.some(proto => url.startsWith(proto));
 };
 
+const containsJS = (markup) => markup.indexOf('javascript&colon;') !== -1 || markup.indexOf('javascript:') !== -1;
+
 // Prepend an http:// in front of any markdown links that don't begin with a valid protocol such as
 // javascript:, data:, etc. This will obviously point to a bad URL but it won't allow anything
 // malicious to execute.
 const sanitizeMarkdown = (markdown) => {
+  if (containsJS(markdown)) {
+    markdown  = markdown.replace(/javascript&colon;|javascript:/g, '');
+  }
+
   return markdown.replace(/\(([a-z]+):/ig, (match, proto) => {
     if (!whitelistedProtocols.includes(proto)) {
       return match.replace(proto, 'http://');
