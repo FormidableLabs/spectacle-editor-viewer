@@ -1,6 +1,6 @@
 {
   "name": "spectacle-editor-viewer",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "Viewer component for Spectacle Editor presentation files",
   "main": "lib/index.js",
   "scripts": {
