@@ -5,11 +5,17 @@ import theme from '../theme';
 
 import Syntax from './syntax';
 import migrate from '../migrations';
+import { passAllowedSpectacleElements, sanitizeUri } from '../util/sanitize';
 
 const { Spectacle, Deck, Slide, Appear } = Core;
 
-Core.Plotly = ({srcDoc, ...props}) => <iframe {...props} />;
-Core.CodePane = Syntax; // Use custom Syntax component for CodePane
+Core.Plotly = ({src, style, height, width, scrolling, frameBorder, name}) => (
+  <iframe src={sanitizeUri(src)} style={style} height={height} width={width}
+    scrolling={scrolling} frameBorder={frameBorder} name={name} />
+);
+
+// Use custom Syntax component for CodePane
+Core.CodePane = Syntax;
 
 const quoteStyles = {
   borderLeftWidth: '0.05em',
@@ -28,111 +34,83 @@ const escapeHtml = (str) => {
   return div.innerHTML;
 }
 
-const whitelistedProtocols = ['http://', 'https://', 'mailto://', 'data:image/gif',
-  'data:image/png', 'data:image/jpeg', 'data:image/webp'];
-
-const isDangerousUrl = (url) => {
-  return !whitelistedProtocols.some(proto => url.startsWith(proto));
-};
-
-const containsJS = (markup) => markup.indexOf('javascript&colon;') !== -1 || markup.indexOf('javascript:') !== -1;
-
-// Prepend an http:// in front of any markdown links that don't begin with a valid protocol such as
-// javascript:, data:, etc. This will obviously point to a bad URL but it won't allow anything
-// malicious to execute.
-const sanitizeMarkdown = (markdown) => {
-  if (containsJS(markdown)) {
-    markdown  = markdown.replace(/javascript&colon;|javascript:/g, '');
-  }
-
-  return markdown.replace(/\(([a-z]+):/ig, (match, proto) => {
-    if (!whitelistedProtocols.includes(proto)) {
-      return match.replace(proto, 'http://');
-    }
-    return match;
-  });
-};
-
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
-  nodes.map((node, i) => {
-    // Text node
-    if (typeof node === 'string') {
-      const contents = escapeHtml(node).replace(/\n/g, '<br>');
-      if (isListItem) {
-        return (<li key={`line-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
+  nodes
+    .filter(node => passAllowedSpectacleElements(node))
+    .map((node, i) => {
+      // Text node
+      if (typeof node === 'string') {
+        const contents = escapeHtml(node).replace(/\n/g, '<br>');
+        if (isListItem) {
+          return (<li key={`line-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
+        }
+        return <span key={`line-${i}`} style={{ width: "100%", display: "block" }} dangerouslySetInnerHTML={{ __html: contents }} />;
       }
-      return <span key={`line-${i}`} style={{ width: "100%", display: "block" }} dangerouslySetInnerHTML={{ __html: contents }} />;
-    }
 
-    // defaultText handling
-    if (node.type === 'Text' && !node.children) {
-      return node.defaultText;
-    }
-
-    const { type, children, props } = node;
-
-    // Get component from Spectacle core
-    let Tag = Core[type];
-
-    /* eslint-disable react/prop-types */
-    if (props.isQuote) {
-      props.style = Object.assign({}, props.style, quoteStyles);
-    }
-
-    // Trap javascript: protocol links and replace with an href that does nothing
-    const urlPropNames = ['href', 'src'];
-    urlPropNames.forEach(propName => {
-      if (props[propName] && isDangerousUrl(props[propName])) {
-        props[propName] = "javascript:;";
+      // defaultText handling
+      if (node.type === 'Text' && !node.children) {
+        return node.defaultText;
       }
+
+      const { type, children, props } = node;
+
+      // Get component from Spectacle core
+      let Tag = Core[type];
+
+      /* eslint-disable react/prop-types */
+      if (props.isQuote) {
+        props.style = Object.assign({}, props.style, quoteStyles);
+      }
+
+      // Trap links with disallowed protocols and replace with an empty string.
+      const urlPropNames = ['href', 'src'];
+      urlPropNames.forEach(propName => {
+        if (props[propName]) {
+          props[propName] = sanitizeUri(props[propName]);
+        }
+      });
+
+      if (type === 'Text' && !props.listType) {
+        let contents;
+        if (props.href) {
+          contents = (
+            <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+              {renderChildren(children, paragraphStyles)}
+            </a>
+          )
+        } else {
+          contents = renderChildren(children, paragraphStyles);
+        }
+
+        return (
+          <Tag key={node.id} {...props} style={{...getStylesForText(props, paragraphStyles)}}>
+            {contents}
+          </Tag>
+        );
+        /* eslint-enable react/prop-types */
+      }
+
+      if (type === 'Text' && props.listType) {
+        Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
+
+        return (
+          <Tag
+            key={node.id}
+            className="presentation-list"
+            style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
+          >
+            {children && renderChildren(children, paragraphStyles, true)}
+          </Tag>
+        );
+      }
+
+      // Render and recurse
+      return (
+        <Tag key={node.id} {...props}>
+          {children && renderChildren(children, paragraphStyles)}
+        </Tag>
+      );
     });
-
-    if (type === 'Markdown' && props.source) {
-      // Sanitize markdown source
-      props.source = sanitizeMarkdown(props.source);
-    }
-
-    if (type === 'Text' && !props.listType) {
-      let contents;
-      if (props.href) {
-        contents = (
-          <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
-            {renderChildren(children, paragraphStyles)}
-          </a>
-        )
-      } else {
-        contents = renderChildren(children, paragraphStyles);
-      }
-
-      return (
-        <Tag key={node.id} {...props} style={{...getStylesForText(props, paragraphStyles)}}>
-          {contents}
-        </Tag>
-      );
-      /* eslint-enable react/prop-types */
-    }
-
-    if (type === 'Text' && props.listType) {
-      Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
-
-      return (
-        <Tag
-          key={node.id}
-          className="presentation-list"
-          style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
-        >
-          {children && renderChildren(children, paragraphStyles, true)}
-        </Tag>
-      );
-    }
-
-    // Render and recurse
-    return (
-      <Tag key={node.id} {...props}>
-        {children && renderChildren(children, paragraphStyles)}
-      </Tag>
-    );
-  });
 
 const slideStyles = {
   flexDirection: "column"
@@ -176,4 +154,3 @@ Viewer.propTypes = {
 };
 
 export default Viewer;
-

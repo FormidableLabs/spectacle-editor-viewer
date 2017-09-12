@@ -7,6 +7,7 @@
     "start": "node server.js",
     "build": "babel src -d lib --copy-files",
     "lint": "eslint . --fix",
+    "test": "mocha --compilers js:babel-core/register ./test/**/*.test.js",
     "preversion": "npm run build"
   },
   "author": "",
@@ -33,6 +34,7 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.5.0",
+    "chai": "^4.1.2",
     "eslint": "^3.0.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.10.3",
@@ -40,6 +42,7 @@
     "eslint-plugin-react": "^5.2.2",
     "express": "^4.14.0",
     "json-loader": "^0.5.4",
+    "mocha": "^3.5.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-transform-hmr": "^1.0.4",
